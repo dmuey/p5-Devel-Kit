@@ -115,7 +115,11 @@ my @encode_unencode_escape_unescape = (
     [ 'su', q{I \xe2\x99\xa5 perl\\'s awesomeness!},           qq{debug(): Given: I \\xe2\\x99\\xa5 perl\\'s awesomeness!\n\tRenders: I ♥ perl's awesomeness!\n} ],
 );
 
-plan tests => 16 + ( 3 * @data_formats ) + @sum_hash + ( 6 * @strings ) + ( 6 * @filesys ) + @encode_unencode_escape_unescape + 3 + 5 + 15 + 4 + 3;
+plan tests => 18 + ( 3 * @data_formats ) + @sum_hash + ( 6 * @strings ) + ( 6 * @filesys ) + @encode_unencode_escape_unescape + 3 + 5 + 15 + 4 + 3;
+
+my $ak = a;
+isa_ok( $ak, 'App::Kit', 'a() returns App-Kit obj' );
+is( a, $ak, 'a() returns same obj' );
 
 my $out;
 {

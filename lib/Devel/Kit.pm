@@ -23,7 +23,7 @@ sub import {
     }
 
     no strict 'refs';    ## no critic
-    for my $l (qw(d ei rx ri ni ci yd jd xd sd md id pd fd dd ld ud gd bd vd ms ss be bu ce cu xe xu ue uu he hu pe pu se su qe qu)) {
+    for my $l (qw(a d ei rx ri ni ci yd jd xd sd md id pd fd dd ld ud gd bd vd ms ss be bu ce cu xe xu ue uu he hu pe pu se su qe qu)) {
         *{ $caller . '::' . $pre . $l } = \&{$l};
     }
 
@@ -32,6 +32,16 @@ sub import {
         strict->import::into($caller);
         warnings->import::into($caller);
     }
+}
+
+my $ak;
+
+sub a {
+    if ( !$ak ) {
+        require App::Kit;
+        $ak = App::Kit->instance;
+    }
+    return $ak;
 }
 
 # output something w/ one trailing newline gauranteed
@@ -1040,6 +1050,12 @@ import() enables strict and warnings in the caller unless you pass the string â€
 =head2 imported functions
 
 If you already have a function by these names you can pass "_" to import() which will import them all w/ an underscore prepended. You can pass "__" to have it prepend 2, "___" to prepend 3, ad infinitum.
+
+=head3 a() App::Kit
+
+You can get a lazy loaded and reused L<App::Kit> object via a().
+
+    pkit -e 'd( a->ctype->get_ctype_of_ext(".pm") )'
 
 =head3 d() General debug/dump
 

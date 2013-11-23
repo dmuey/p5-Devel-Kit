@@ -49,6 +49,8 @@ WriteMakefile(
         'Capture::Tiny' => 0,
 
         'Regexp::Debugger' => 0,
+
+        'App::Kit' => 0.6,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES    => 'Devel-Kit-*' },

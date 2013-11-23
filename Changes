@@ -1,5 +1,8 @@
 Revision history for Devel-Kit
 
+0.7  ???
+    - add a()
+
 0.6  Wed Sep  4 20:47:04 2013
     - add Hex support via xe() and xu()
 

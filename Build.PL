@@ -47,6 +47,8 @@ my $builder = Module::Build->new(
 
         'Regexp::Debugger' => 0,
 
+        'App::Kit' => 0.6,
+
     },
     add_to_cleanup => ['Devel-Kit-*'],
 );
