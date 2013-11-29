@@ -2,6 +2,7 @@ Revision history for Devel-Kit
 
 0.7  ???
     - add a()
+    - improve punycode logic
     - TODO: auto-detect and switch to correct subclass
     - TODO: command dumper (output and exit code)
 
