@@ -810,7 +810,7 @@ sub pu {
                 my ( $nam, $dom ) = split( /@/, $s, 2 );    # multiple @ == ???
                 eval { $res = Net::IDN::Encode::domain_to_unicode($nam) . '@' . Net::IDN::Encode::domain_to_unicode($dom); };
                 if ($@) {
-                    $res = "invalid punycode ($@)" if $@;
+                    $res = "invalid punycode ($@)";
                 }
                 else {
                     utf8::encode($res);                     # turn unicode string back into utf8 bytes
@@ -819,7 +819,7 @@ sub pu {
             else {
                 eval { $res = Net::IDN::Encode::domain_to_unicode($s); };
                 if ($@) {
-                    $res = "invalid punycode ($@)" if $@;
+                    $res = "invalid punycode ($@)";
                 }
                 else {
                     utf8::encode($res);                     # turn unicode string back into utf8 bytes
