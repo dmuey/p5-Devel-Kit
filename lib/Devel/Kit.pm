@@ -1165,7 +1165,11 @@ like Devel::Kit::p() but w/ Devel::Size and/or Devel::Peek info as well
 
 =head4 si() system command info
 
-TODO: POD and t/
+    perl -MDevel::Kit -e 'si(@system_cmd)'
+
+Execute’s @system_cmd, displays its output labeled as STDOUT/STDERR, and describes its child error and errno states.
+
+Currently there is no interface to the command’s STDIN but it could be added, let me know if you’d find that useful.
 
 =head4 rx() interactive Regex debugging
 
