@@ -3,8 +3,7 @@ Revision history for Devel-Kit
 0.7  ???
     - add a()
     - improve punycode logic
-    - TODO: auto-detect and switch to correct subclass
-    - TODO: command dumper (output and exit code)
+    - add si()
 
 0.6  Wed Sep  4 20:47:04 2013
     - add Hex support via xe() and xu()

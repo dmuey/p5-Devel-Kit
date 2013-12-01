@@ -51,6 +51,8 @@ WriteMakefile(
         'Regexp::Debugger' => 0,
 
         'App::Kit' => 0.6,
+
+        'IPC::Open3::Utils' => 0.9,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES    => 'Devel-Kit-*' },

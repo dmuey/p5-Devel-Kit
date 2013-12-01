@@ -23,7 +23,7 @@ sub import {
     }
 
     no strict 'refs';    ## no critic
-    for my $l (qw(a d ei rx ri ni ci yd jd xd sd md id pd fd dd ld ud gd bd vd ms ss be bu ce cu xe xu ue uu he hu pe pu se su qe qu)) {
+    for my $l (qw(a d ei rx ri ni ci si yd jd xd sd md id pd fd dd ld ud gd bd vd ms ss be bu ce cu xe xu ue uu he hu pe pu se su qe qu)) {
         *{ $caller . '::' . $pre . $l } = \&{$l};
     }
 
@@ -202,6 +202,59 @@ sub ni {
     else {
         @_ = "Error: ni() requires a name space\n";
     }
+
+    return @_ if $ret;
+    goto &d;
+}
+
+sub si {
+    my $ret = $_[-1] eq '_Devel::Kit_return' ? pop(@_) : 0;
+
+    @_ = _at_setup(
+        'IPC::Open3::Utils',
+        sub {
+            my $out = "Command: \n" . p( \@_ ) . "\n";
+
+            my $open3_error;
+            if (
+                !IPC::Open3::Utils::run_cmd(
+                    @_,
+                    {
+                        'open3_error' => \$open3_error,
+                        'handler'     => sub {
+                            my ( $cur_line, $stdin, $is_stderr, $is_open3_err, $short_circuit_loop_boolean_scalar_ref ) = @_;
+                            $out .= $is_stderr ? "  STDERR: $cur_line" : "  STDOUT: $cur_line";
+                            return 1;
+                        },
+                    }
+                )
+              ) {
+                $out .= "Command did not exit cleanly:\n";
+                $out .= "  \$? = $?\n  \$! = " . int($!) . " ($!)\n";
+                if ($open3_error) {
+                    chomp($open3_error);
+                    $out .= "  open3() said: $open3_error\n";
+                }
+
+                if ($?) {    # or if (!child_error_ok($?)) {
+                    $out .= "  Command failed to execute.\n" if IPC::Open3::Utils::child_error_failed_to_execute($?);
+                    $out .= "  Command seg faulted.\n"       if IPC::Open3::Utils::child_error_seg_faulted($?);
+                    $out .= "  Command core dumped.\n"       if IPC::Open3::Utils::child_error_core_dumped($?);
+                    unless ( IPC::Open3::Utils::child_error_failed_to_execute($?) ) {
+                        $out .= "  Command exited with signal: " . IPC::Open3::Utils::child_error_exit_signal($?) . ".\n";
+                        $out .= "  Command exited with value: " . IPC::Open3::Utils::child_error_exit_value($?) . ".\n";
+                    }
+                }
+            }
+            else {
+                $out .= "Command exited cleanly.\n";
+                $out .= "  \$? = $?\n  \$! = " . int($!) . " ($!)\n";
+            }
+
+            return $out;
+        },
+        @_
+    );
 
     return @_ if $ret;
     goto &d;
@@ -859,7 +912,7 @@ sub _at_setup {
         @_ = $_[2];
     }
     elsif ( Module::Want::have_mod( $_[0] ) ) {
-        @_ = $_[1]->( $_[2] );
+        @_ = $_[1]->( @_[ 2 .. $#_ ] );
     }
     else {
         @_ = "Error: “$_[0]” could not be loaded:\n\t$@\n";
@@ -1110,6 +1163,10 @@ like Devel::Kit::p() but w/ Devel::Size and/or Devel::Peek info as well
 
     perl -MDevel::Kit -e 'ri($your_ref_here)'
 
+=head4 si() system command info
+
+TODO: POD and t/
+
 =head4 rx() interactive Regex debugging
 
 Lazy loaded Regexp::Debugger::rxrx() wrapper. See L<Regexp::Debugger> for more info.
@@ -1348,13 +1405,13 @@ L<http://rt.cpan.org>.
 
 =over 4
 
+=item * auto-detect and switch to correct subclass
+
 =item * *d() functions could use corresponding d*() functions (e.g. dy() would dump as YAML …)
 
 =item * Stringified Data dumpers also take path or handle in addition to a string.
 
 =item * string parser/dumpers make apparent what it was (i.e. YAML, XML, etc)
-
-=item * Sort out punycode “standard” issues.
 
 =back
 

@@ -49,6 +49,7 @@ my $builder = Module::Build->new(
 
         'App::Kit' => 0.6,
 
+        'IPC::Open3::Utils' => 0.9,
     },
     add_to_cleanup => ['Devel-Kit-*'],
 );
