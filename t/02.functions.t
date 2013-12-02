@@ -115,7 +115,7 @@ my @encode_unencode_escape_unescape = (
     [ 'su', q{I \xe2\x99\xa5 perl\\'s awesomeness!},   qq{debug(): Given: I \\xe2\\x99\\xa5 perl\\'s awesomeness!\n\tRenders: I ♥ perl's awesomeness!\n} ],
 );
 
-plan tests => 18 + ( 3 * @data_formats ) + @sum_hash + ( 6 * @strings ) + ( 6 * @filesys ) + @encode_unencode_escape_unescape + 3 + 5 + 15 + 4 + 3;
+plan tests => 18 + ( 3 * @data_formats ) + @sum_hash + ( 6 * @strings ) + ( 6 * @filesys ) + @encode_unencode_escape_unescape + 3 + 5 + 15 + 4 + 3 + 9;
 
 my $ak = a;
 isa_ok( $ak, 'App::Kit', 'a() returns App-Kit obj' );
@@ -399,6 +399,38 @@ for my $u (@encode_unencode_escape_unescape) {
     like( $rez, qr/Begin Raw Diff/, "ni() verbose 1 == symbol diff" );
 
     # TODO Moar!!! ci (Devel::Kit::_CODE::_ci())
+}
+
+{
+  SKIP: {
+        skip "Need IPC::Open3::Utils to test si()", 9, unless Module::Want::have_mod('IPC::Open3::Utils');
+        local $? = 0;
+        local $! = 0;
+        no warnings 'redefine';
+        local *IPC::Open3::Utils::run_cmd = sub {
+            pop @_;
+            is_deeply( \@_, [qw(true bar baz 42)], 'correct args passed to run_cmd()' );
+        };
+        my $called = 0;
+        local *Devel::Kit::d = sub {
+            $called++;
+        };
+
+        my ($rez) = si( qw(true bar baz 42), '_Devel::Kit_return' );
+        like( $rez, qr/Command:/,                 'returns under _Devel::Kit_return' );
+        like( $rez, qr/Command exited cleanly\./, 'says it exited cleanly when it does' );
+        like( $rez, qr/  \$\? = 0/,               'clean exit shows \$?' );
+        like( $rez, qr/  \$\! = 0 \(/,            'clean exit shows \$!' );
+        is( $called, 0, 'd() not called under _Devel::Kit_return' );
+
+        ($rez) = si(qw(true bar baz 42));
+        is( $rez,    0, 'does not return under _Devel::Kit_return' );
+        is( $called, 1, 'd() called when not under _Devel::Kit_return' );
+
+        # TODO: check various outputs depending on $! and $?
+        # *IPC::Open3::Utils::run_cmd = sub { $? = 256; $! = 9; };
+
+    }
 }
 
 sub _inc_err_qr {
