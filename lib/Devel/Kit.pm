@@ -1137,7 +1137,7 @@ Runs the given code ref and takes some measurements.
 
 Caveat: Observer effect
 
-Some things might not be apparent due the current state of things. For exmample, a module might be loaded by the coderef but since it is already loaded it is not factored in the results.
+Some things might not be apparent due the current state of things. For example, a module might be loaded by the coderef but since it is already loaded it is not factored in the results.
 
 Caveat: You get more accurate results if Devel::CountOps is loaded during BEGIN before you call ci()
 
