@@ -16,7 +16,7 @@ sub import {
 use Cpanel::Logger ();
 my $logger = Cpanel::Logger->new();
 
-my $a;
+my $ak;
 {
     no warnings 'redefine';
     *Devel::Kit::o = sub {
