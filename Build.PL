@@ -47,7 +47,7 @@ my $builder = Module::Build->new(
 
         'Regexp::Debugger' => 0,
 
-        'App::Kit' => 0.6,
+        'App::Kit' => 0.62,
 
         'IPC::Open3::Utils' => 0.91,
     },
