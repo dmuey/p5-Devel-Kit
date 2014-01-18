@@ -88,6 +88,9 @@ my @strings = (
 my @sum_hash = (
     [ 'ms', 'I ♥ perl', "debug(): MD5 Sum: 040ab5366f264eb28f4e310a994fde15\n" ],
     [ 'ss', 'I ♥ perl', "debug(): SHA1 Hash: d95af59dffb410853e85b28d6025d2825b257c42\n" ],
+    [ 's2', 'I ♥ perl', "debug(): SHA256 Hash: 5ea84ee48c167ac9ae5d2b375564f4f9b43d9e8cdbf2618377cf3d188c0cf10b\n" ],
+    [ 's3', 'I ♥ perl', "debug(): SHA384 Hash: d5d10c798443cc778fb4c89b6a461ec990812a9e8b2d734ac6c7e4b676a6a9b1d64a16c89a69c690470e79cd8b98c44d\n" ],
+    [ 's5', 'I ♥ perl', "debug(): SHA512 Hash: 4c5be38240fb9ee4bb5795341627d99429f7450a22fbffdae1fe5a703b0c71a804e0e69db369bd0064c9bd44e84d09277103b2570d8b57c3050837c20efa0c46\n" ],
 );
 
 my @encode_unencode_escape_unescape = (

@@ -23,7 +23,7 @@ sub import {
     }
 
     no strict 'refs';    ## no critic
-    for my $l (qw(a d ei rx ri ni ci si yd jd xd sd md id pd fd dd ld ud gd bd vd ms ss be bu ce cu xe xu ue uu he hu pe pu se su qe qu)) {
+    for my $l (qw(a d ei rx ri ni ci si yd jd xd sd md id pd fd dd ld ud gd bd vd ms ss s2 s3 s5 be bu ce cu xe xu ue uu he hu pe pu se su qe qu)) {
         *{ $caller . '::' . $pre . $l } = \&{$l};
     }
 
@@ -602,6 +602,57 @@ sub ss {
             my ($s) = $_[0];
             $s = String::UnicodeUTF8::get_utf8($s);
             return "SHA1 Hash: " . Digest::SHA::sha1_hex($s);
+        },
+        @_
+    );
+
+    return @_ if $ret;
+    goto &d;
+}
+
+sub s2 {
+    my $ret = $_[-1] eq '_Devel::Kit_return' ? 1 : 0;
+
+    @_ = _at_setup(
+        'Digest::SHA',
+        sub {
+            my ($s) = $_[0];
+            $s = String::UnicodeUTF8::get_utf8($s);
+            return "SHA256 Hash: " . Digest::SHA::sha256_hex($s);
+        },
+        @_
+    );
+
+    return @_ if $ret;
+    goto &d;
+}
+
+sub s3 {
+    my $ret = $_[-1] eq '_Devel::Kit_return' ? 1 : 0;
+
+    @_ = _at_setup(
+        'Digest::SHA',
+        sub {
+            my ($s) = $_[0];
+            $s = String::UnicodeUTF8::get_utf8($s);
+            return "SHA384 Hash: " . Digest::SHA::sha384_hex($s);
+        },
+        @_
+    );
+
+    return @_ if $ret;
+    goto &d;
+}
+
+sub s5 {
+    my $ret = $_[-1] eq '_Devel::Kit_return' ? 1 : 0;
+
+    @_ = _at_setup(
+        'Digest::SHA',
+        sub {
+            my ($s) = $_[0];
+            $s = String::UnicodeUTF8::get_utf8($s);
+            return "SHA512 Hash: " . Digest::SHA::sha512_hex($s);
         },
         @_
     );
@@ -1260,6 +1311,18 @@ Unicode strings are turned into utf-8 before summing (since you can’t sum a Un
 =head4 ss() SHA1
 
     perl -MDevel::Kit -e 'ss($your_string_here)'
+
+=head4 s2() SHA256
+
+    perl -MDevel::Kit -e 's2($your_string_here)'
+
+=head4 s3() SHA384
+
+    perl -MDevel::Kit -e 's3($your_string_here)'
+
+=head4 s5() SHA512
+
+    perl -MDevel::Kit -e 's5($your_string_here)'
 
 =head3 Escape/Unescape Encode/Unencode
 
