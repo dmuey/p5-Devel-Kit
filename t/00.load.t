@@ -18,8 +18,8 @@ like( $@, qr/Global symbol "\$x" requires explicit package name/, 'strict enable
     local $SIG{__WARN__} = sub {
         $warn = join( '', @_ );
     };
-    eval 'print @X[0]';
-    like( $warn, qr/Scalar value \@x\[0\] better written as \$x\[0\]/i, 'warnings enabled' );
+    eval 'my $n;my $s="$n foo";';
+    like( $warn, qr/Use of uninitialized value \$n in concatenation/i, 'warnings enabled' );
 }
 
 for my $f (@exported) {
