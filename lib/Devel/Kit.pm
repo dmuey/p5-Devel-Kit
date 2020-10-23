@@ -3,8 +3,8 @@ package Devel::Kit;
 use strict;
 use warnings;
 
-use Module::Want 0.6 ();
-use String::UnicodeUTF8 ();
+use Module::Want 0.6         ();
+use String::UnicodeUTF8 0.23 ();
 
 $Devel::Kit::VERSION = '0.81';
 $Devel::Kit::fh      = \*STDOUT;
